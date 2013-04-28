@@ -1,0 +1,24 @@
+<component name="libraryTable">
+  <library name="Slick2D">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/Downloads/slick/lib/lwjgl.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/slick/lib/slick.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/slick/lib/jnlp.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/slick/lib/ibxm.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/slick/lib/slick-util.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/slick/lib/slick-examples.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/slick/lib/scalar.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/slick/lib/hiero.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/slick/lib/jinput.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/slick/lib/jogg-0.0.7.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/slick/lib/packulike.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/slick/lib/pedigree.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/slick/lib/tinylinepp.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/slick/lib/jorbis-0.0.15.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/Downloads/slick/lib/slick-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
