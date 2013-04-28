@@ -12,7 +12,7 @@ public class Menu extends BasicGameState {
 
     TextButton start,quit;
 
-    Image buttonBack, background;
+    Image buttonBack, background, logo;
 
     SpriteSheet sheet;
 
@@ -30,6 +30,8 @@ public class Menu extends BasicGameState {
 
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 
+        logo = new Image("oclu/ludumdare/res/img/logo.png");
+
         background = new Image("oclu/ludumdare/res/img/background.png");
 
         sheet = new SpriteSheet(new Image("oclu/ludumdare/res/img/Spritesheet.png"), 16, 16);
@@ -46,6 +48,7 @@ public class Menu extends BasicGameState {
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) {
 
         background.draw();
+        logo.draw(gc.getWidth()/2-logo.getWidth()/2, -75);
 
         start.draw(g);
         quit.draw(g);

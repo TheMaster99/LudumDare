@@ -2,6 +2,7 @@ package oclu.ludumdare.elements;
 
 import org.newdawn.slick.*;
 import java.lang.Math;
+import oclu.ludumdare.states.Game;
 
 public class Asteroid {
 
@@ -21,7 +22,6 @@ public class Asteroid {
 
     Sound boom;
 
-    public Powerup powerup;
 
     public void spawn() {
         double randomNum = Math.random();
@@ -105,7 +105,7 @@ public class Asteroid {
         shards[0].speedY -= 2f;
         shards[2].speedY += 0.1f;
 
-
+        Game.powerups.add(new Powerup(sheet, (float)xPos, (float)yPos));
 
         isDestroyed = true;
     }

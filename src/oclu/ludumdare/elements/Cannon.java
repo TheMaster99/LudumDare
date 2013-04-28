@@ -45,7 +45,9 @@ public class Cannon {
 
     public void pickTarget(ArrayList<Asteroid> asteroids) {
         currentTarget = (int)((float)asteroids.size() * Math.random());
-        shoot(asteroids.get(currentTarget));
+        if (!asteroids.get(currentTarget).isDestroyed) {
+            shoot(asteroids.get(currentTarget));
+        }
     }
 
     public void shoot(Asteroid target) {

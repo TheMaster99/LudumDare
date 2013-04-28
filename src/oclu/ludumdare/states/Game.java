@@ -13,7 +13,8 @@ public class Game extends BasicGameState {
 
     public static Basket plyr;
 
-    ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
+    public static ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
+    public static ArrayList<Powerup> powerups = new ArrayList<Powerup>();
 
 
     Cannon cannon;
@@ -21,7 +22,7 @@ public class Game extends BasicGameState {
     Bullet bullet;
 
     TextButton resume, exit, x;
-    Image buttonBack, border, exitButton, exitHover, background;
+    Image buttonBack, border, exitButton, exitHover, background, logo;
     SpriteSheet sheet;
 
     public static boolean isTimeWarp = false;
@@ -29,9 +30,10 @@ public class Game extends BasicGameState {
     public static boolean isPaused = false;
 
     public static int score = 0;
+    public static int shardsMissed = 0;
 
-    int spawnAsteroidCooldown = 0;
-    int spawnAsteroidCooldownRequired = 10000;
+    public static int spawnAsteroidCooldown = 0;
+    public static int spawnAsteroidCooldownRequired = 10000;
 
     public Game(int ID) {
         this.ID = ID;
@@ -46,16 +48,24 @@ public class Game extends BasicGameState {
     @Override
 
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
+        logo = new Image("oclu/ludumdare/res/img/logosmall.png").getScaledCopy(230, 80);
+
         buttonBack = new Image("oclu/ludumdare/res/img/blankButton.png");
 
         border = new Image("oclu/ludumdare/res/img/Border.png");
 
-        background = new Image("oclu/ludumdare/res/img/background.png");
+        background = new Image("oclu/ludumdare/res/img/background.png").getScaledCopy(544, 672);
 
         sheet = new SpriteSheet("oclu/ludumdare/res/img/Spritesheet.png", 16, 16);
 
         exitButton = sheet.getSubImage(0,0,16,16).getScaledCopy(32,32);
         exitHover = sheet.getSubImage(0,16,16,16).getScaledCopy(32,32);
+
+    }
+
+    @Override
+
+    public void enter(GameContainer gc, StateBasedGame sbg) throws SlickException {
 
         plyr = new Basket(sheet);
 
@@ -74,8 +84,8 @@ public class Game extends BasicGameState {
     @Override
 
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) {
-        background.draw();
-        plyr.draw(g);
+        background.draw(128,128);
+        plyr.draw();
         for (int i = 0; i < asteroids.size(); i++) {
             if (asteroids.get(i) != null) {
 
@@ -94,12 +104,21 @@ public class Game extends BasicGameState {
             bullet.draw();
         }
 
+        for (int i = 0; i < powerups.size(); i++) {
+            if (powerups.get(i) != null) {
+                powerups.get(i).draw();
+            }
+        }
+
         if (isPaused) {
             resume.draw(g);
             exit.draw(g);
         }
         border.draw();
+        logo.draw(gc.getWidth()/2-logo.getWidth()/2, 25);
+        g.setColor(Color.white);
         g.drawString("Current Score: " +score, 32, 32);
+        g.drawString("Shards Missed: "+shardsMissed, 32, 48);
         x.draw(g);
     }
 
@@ -131,9 +150,21 @@ public class Game extends BasicGameState {
         }else {
             plyr.checkAction(in, delta);
             plyr.collectShards(asteroids);
+            plyr.collectPowerups(powerups);
             for (int i = 0; i < asteroids.size(); i++) {
                 if (asteroids.get(i) != null) {
                     asteroids.get(i).move(delta);
+                }
+            }
+            for (int i = 0; i < powerups.size(); i++) {
+                if (powerups.get(i) != null) {
+                    if (powerups.get(i).isActive) {
+                        powerups.get(i).startCountdown();
+                    }
+                    powerups.get(i).fall(delta);
+                    if (powerups.get(i).isDisappeared()) {
+                        powerups.remove(i);
+                    }
                 }
             }
             cannon.pickTarget(asteroids);
@@ -152,6 +183,9 @@ public class Game extends BasicGameState {
                     if (asteroids.get(i) != null) {
                         if (asteroids.get(i).shards[ii] != null) {
                             if (asteroids.get(i).shards[ii].isDisappeared) {
+                                if (asteroids.get(i).shards[ii].wasCollected == false) {
+                                    shardsMissed += 1;
+                                }
                                 asteroids.get(i).shards[ii] = null;
                             }else {
                                 asteroids.get(i).shards[ii].move(delta);
@@ -165,9 +199,12 @@ public class Game extends BasicGameState {
                 asteroids.add(new Asteroid(sheet, gc));
 
                 spawnAsteroidCooldown = 0;
-                spawnAsteroidCooldownRequired -= 5;
+                spawnAsteroidCooldownRequired -= 20;
             }else {
                 spawnAsteroidCooldown++;
+            }
+            if (shardsMissed >= 9) {
+                sbg.enterState(2);
             }
         }
     }

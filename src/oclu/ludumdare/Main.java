@@ -20,6 +20,7 @@ public class Main extends StateBasedGame {
     public void initStatesList(GameContainer gc) throws SlickException {
         this.addState(new Menu(0));
         this.addState(new Game(1));
+        this.addState(new GameOver(2));
     }
 
     public static void main(String[] args) throws SlickException {

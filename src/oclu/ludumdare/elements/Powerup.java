@@ -18,6 +18,11 @@ public class Powerup {
 
     Sound collect, powerup;
 
+    int cooldown = 0;
+
+    public boolean isActive = false;
+
+
     public Powerup(SpriteSheet sheet, float posX, float posY) throws SlickException {
 
         double random = Math.random();
@@ -25,7 +30,9 @@ public class Powerup {
         this.sheet = sheet;
 
 
-        if (random > .95) {
+        sprite = sheet.getSubImage(48,64,16,16);
+        powerType = 1;
+        /*/ if (random > .95) {
             sprite = sheet.getSubImage(32, 64, 16, 16);
             powerType = 0;
         }else if (random > .80) {
@@ -37,6 +44,12 @@ public class Powerup {
         }else if (random > .65) {
             sprite = sheet.getSubImage(80, 64, 16, 16);
             powerType = 3;
+        }else {
+            isDisappeared = true;
+        }
+    /*/
+        if (sprite != null) {
+            sprite = sprite.getScaledCopy(32, 32);
         }
 
         this.posX = posX;
@@ -63,9 +76,10 @@ public class Powerup {
         isDisappeared = true;
 
         collect.play(1f, 0.1f);
+        activate();
     }
 
-    public void activate(int delta) {
+    public void activate() {
         powerup.play(1f, 0.1f);
         if (powerType == 0) {
             // potato
@@ -76,10 +90,26 @@ public class Powerup {
         }else if (powerType == 3) {
             Game.plyr.isDoubleScore = true;
         }
-        startCountdown(delta);
+        startCountdown();
+        isActive = true;
     }
 
-    void startCountdown(int delta) {
+    public void startCountdown() {
+        if (powerType == 0) {
+            // 5 seconds
+        }else if (powerType == 1) {
+            // 20 seconds
+
+            if (cooldown < 500) {
+                cooldown++;
+            }else {
+
+            }
+        }else if (powerType == 2) {
+            // 5-10 seconds
+        }else if (powerType == 3) {
+            // 30 seconds
+        }
 
         deactivate();
     }
@@ -93,6 +123,13 @@ public class Powerup {
             Game.isTimeWarp = false;
         }else if (powerType == 3) {
             Game.plyr.isDoubleScore = false;
+        }
+        isActive = false;
+    }
+
+    public void draw() {
+        if (sprite != null) {
+            sprite.draw(posX, posY);
         }
     }
 

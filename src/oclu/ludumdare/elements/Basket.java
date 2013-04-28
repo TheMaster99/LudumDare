@@ -26,9 +26,7 @@ public class Basket {
         basketLarge = sheet.getSubImage(48, 118, 48, 10).getScaledCopy(96,20);
     }
 
-    public void draw(Graphics g) {
-        //g.setColor(Color.blue);
-        //g.fillRect(xPos, yPos, 32, 16);
+    public void draw() {
         if (isLarge) {
             basketLarge.draw(xPos, yPosLarge);
         }else {
@@ -94,6 +92,28 @@ public class Basket {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    public void collectPowerups(ArrayList<Powerup> powerups) {
+        for (int i = 0; i < powerups.size(); i++) {
+            if (powerups.get(i) != null) {
+
+                Powerup currentPowerup = powerups.get(i);
+
+                if (isLarge) {
+                    if (currentPowerup.posX >= xPos && currentPowerup.posX <= xPos + basketLarge.getWidth() && currentPowerup.posY >= yPosLarge) {
+                        currentPowerup.collect();
+                        currentPowerup.activate();
+                    }
+                }else {
+                    if (currentPowerup.posX >= xPos && currentPowerup.posX <= xPos + basket.getWidth() && currentPowerup.posY >= yPos) {
+                        currentPowerup.collect();
+                        currentPowerup.activate();
+                    }
+                }
+
             }
         }
     }

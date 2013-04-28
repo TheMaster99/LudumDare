@@ -11,6 +11,7 @@ public class Shard {
     public float speedY = 0.1f;
 
     public boolean isDisappeared = false;
+    public boolean wasCollected = false;
 
     Sound collect;
 
@@ -60,6 +61,7 @@ public class Shard {
         isDisappeared = true;
 
         collect.play(1f, 0.1f);
+        wasCollected = true;
     }
 
 }
